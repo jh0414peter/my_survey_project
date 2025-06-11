@@ -1,18 +1,37 @@
 // api/getSurveyLink.js
 
-let counter = 0; // 메모리 기반 카운터 (간단 예시용)
+// 전역 상태 예제용 (실전에서는 DB 사용!)
+if (!global.userSurveyMap) {
+    global.userSurveyMap = {};
+}
+if (!global.counter) {
+    global.counter = 0;
+}
 
 const surveyLinks = [
-    'https://naver.com',
-    'https://google.com',
-    'https://samsung.com'
+    'https://ko.surveymonkey.com/r/CLSLYTW',
+    'https://ko.surveymonkey.com/r/KW39F9W,
+    'https://ko.surveymonkey.com/r/KW3FLPX'
 ];
 
 export default function handler(req, res) {
-    const linkIndex = counter % surveyLinks.length;
+    const { user_id } = req.query;
+
+    if (!user_id) {
+        return res.status(400).json({ error: "user_id is required" });
+    }
+
+    // 이미 user_id에 설문 링크 배정되어 있으면 그대로 반환
+    if (global.userSurveyMap[user_id]) {
+        return res.status(200).json({ link: global.userSurveyMap[user_id] });
+    }
+
+    // 새로 배정
+    const linkIndex = global.counter % surveyLinks.length;
     const selectedLink = surveyLinks[linkIndex];
 
-    counter += 1;
+    global.counter += 1;
+    global.userSurveyMap[user_id] = selectedLink;
 
     res.status(200).json({ link: selectedLink });
 }
