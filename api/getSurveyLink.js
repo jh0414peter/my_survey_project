@@ -10,7 +10,7 @@ if (!global.counter && global.counter !== 0) {
 
 const surveyLinks = [
     'https://ko.surveymonkey.com/r/CLSLYTW',
-    'https://ko.surveymonkey.com/r/KW39F9W,
+    'https://ko.surveymonkey.com/r/KW39F9W',
     'https://ko.surveymonkey.com/r/KW3FLPX'
 ];
 
